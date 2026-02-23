@@ -1,3 +1,12 @@
+.container {
+	display: grid;
+	grid-template-columns: auto auto auto auto ;
+}
+
+.slider-buttons {
+	background-color: transparent;
+}
+
 .dashboard-image {
   width: 100%;
   height: 100%;
@@ -10,10 +19,10 @@
 	grid-gap: 2rem;
 	overflow: hidden;
 	object-fit: cover;
-	grid-template-columns: auto auto auto ;
+	grid-template-columns: auto auto auto auto ;
 	scroll-behavior: smooth;
 	padding: 1rem;
-	border-radius: 8px;
+	border-radius: 20px;
 }
 
 .dashboard::-webkit-scrollbar {
@@ -29,7 +38,7 @@
 	display: grid;
 	align-items: center;
 	justify-content: center;
-	border-radius: 8px;
+	border-radius: 20px;
 }
 
 .Slider {
@@ -41,6 +50,7 @@
 }
 
 .Slider:hover .overlay {
+	border-radius: 20px;
 	opacity: 0.8;
 	transform: scale(1.2);
 }

@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef, createRef} from "react";
 import minecraft from "./dashboard_images/minecraft2048x2048.png";
 import roblox from "./dashboard_images/Roblox.png";
-import fortnite from "./dashboard_images/Fortnite.jpg"
-
+import fortnite from "./dashboard_images/Fortnite.jpg";
+import left_arrow from "./left-arrow.png";
+import right_arrow from "./right-arrow.png";
 import "./dashboard.css"
 
 const data = [
@@ -23,12 +24,16 @@ const Dashboard = () => {
 
 	const dashboardRef = useRef(null);
 	function onHandleClick () {
-		
+		console.log('Button clicked');
 	}
 
 	return (
 	<div className={"row"}>
 		<div className="container">
+			<button onClick={onHandleClick}>
+				<img src={left_arrow} alt="Clickable left button" className="slider-buttons"/>
+			</button>
+			
 			<div className="dashboard" ref={dashboardRef}>
 				{data.map((v, i) => (
 					<div key={i} className="Slider">
@@ -39,6 +44,10 @@ const Dashboard = () => {
 					</div>
 				))}
 			</div>
+			
+			<button onClick={onHandleClick}>
+				<img src={right_arrow} alt="Clickable left button" className="slider-buttons"/>
+			</button>
 		</div>
 	</div>
 	);
