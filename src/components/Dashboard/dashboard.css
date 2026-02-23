@@ -1,8 +1,9 @@
-.container {
-	display: grid;
-	grid-template-columns: auto auto auto auto ;
+.carousel{
+	display: flex;
+	align-items: center;
+	z-index: 20;
+	position: relative;
 }
-
 .slider-buttons {
 	background-color: transparent;
 }
@@ -14,18 +15,20 @@
   border-radius: 8px;
 }
 
-.dashboard {
+.row {
 	display: grid;
 	grid-gap: 2rem;
 	overflow: hidden;
+	transition: transform 0.3s ease;
 	object-fit: cover;
 	grid-template-columns: auto auto auto auto ;
 	scroll-behavior: smooth;
 	padding: 1rem;
 	border-radius: 20px;
+	z-index: -1;
 }
 
-.dashboard::-webkit-scrollbar {
+.row::-webkit-scrollbar {
 	display: none;
 }
 
@@ -47,6 +50,7 @@
 	height: 350px;
 	margin-right: 1rem;
 	border-radius: 8px;
+	flex-shrink: 0;
 }
 
 .Slider:hover .overlay {
