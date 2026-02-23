@@ -22,7 +22,9 @@ const overlay_data = ["Fortnite", "Minecraft", "Roblox"];
 const Dashboard = () => {
 
 	const dashboardRef = useRef(null);
-
+	function onHandleClick () {
+		
+	}
 
 	return (
 	<div className={"row"}>
