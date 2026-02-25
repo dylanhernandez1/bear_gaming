@@ -1,0 +1,461 @@
+
+
+/* ===== Logged-in Top Nav ===== */
+.topNav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.topNavLeft, .topNavRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topNavLeft {
+  min-width: 110px;
+}
+
+.topNavRight {
+  margin-left: auto;
+}
+
+.navIcon, .navIconLink {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  font-size: 18px;
+}
+
+.navIcon:hover, .navIconLink:hover {
+  background: rgba(0,0,0,0.03);
+}
+
+.navHello {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-right: 4px;
+}
+
+.topNavSearch {
+  flex: 1;
+  max-width: 560px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: rgba(0,0,0,0.02);
+}
+
+.searchIcon {
+  opacity: 0.7;
+}
+
+.searchInput {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+}
+
+/* ===== Drawer ===== */
+.drawerBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease;
+  z-index: 80;
+}
+
+.drawerBackdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: -360px;
+  width: 340px;
+  height: 100vh;
+  background: #fff;
+  border-left: 1px solid rgba(0,0,0,0.08);
+  box-shadow: -10px 0 30px rgba(0,0,0,0.12);
+  transition: right 180ms ease;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer.open {
+  right: 0;
+}
+
+.drawerHeader {
+  height: 72px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.drawerUser {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.drawerAvatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.12);
+  display: grid;
+  place-items: center;
+}
+
+.drawerName {
+  font-weight: 600;
+}
+
+.drawerClose {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: #fff;
+  cursor: pointer;
+}
+
+.drawerList {
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.drawerItem {
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.drawerItem:hover {
+  background: rgba(0,0,0,0.03);
+}
+
+.drawerItemIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.10);
+  display: grid;
+  place-items: center;
+}
+
+.drawerItemText {
+  flex: 1;
+  font-weight: 600;
+}
+
+.drawerItemChevron {
+  opacity: 0.6;
+  font-size: 18px;
+}
+
+.drawerItem.muted {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.drawerItem.danger {
+  border-color: rgba(255,0,0,0.18);
+}
+
+/* ===== Page Layout ===== */
+.page {
+  padding: 18px 16px 36px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.profileGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 16px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .profileGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Profile ===== */
+.avatarWrap {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+}
+
+.avatar {
+  width: 180px;
+  height: 180px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: rgba(0,0,0,0.03);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
+.avatarPlaceholder {
+  font-size: 52px;
+  opacity: 0.6;
+}
+
+.fileInput {
+  display: none;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn:hover {
+  background: rgba(0,0,0,0.03);
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.bigName {
+  font-size: 40px;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.iconPill {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: #fff;
+  cursor: pointer;
+}
+
+.fieldRow {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.fieldLabel {
+  font-weight: 700;
+  font-size: 14px;
+  opacity: 0.75;
+}
+
+.fieldInputWrap {
+  display: grid;
+  gap: 6px;
+}
+
+.fakeInput {
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: rgba(0,0,0,0.02);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-weight: 600;
+}
+
+.linkBtn {
+  justify-self: end;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 12px;
+  opacity: 0.7;
+  text-decoration: underline;
+}
+
+.profileActions {
+  display: grid;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.btnWide {
+  height: 46px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: #fff;
+  cursor: pointer;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.btnSmall {
+  width: 140px;
+  height: 42px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: #fff;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.btnDanger {
+  height: 46px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,0,0,0.20);
+  background: #fff;
+  cursor: pointer;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Saved Games ===== */
+.pageHeader {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.pageTitle {
+  margin: 0;
+  font-size: 28px;
+}
+
+.savedSearchBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: rgba(0,0,0,0.02);
+  max-width: 520px;
+}
+
+.savedSearchInput {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+}
+
+.gameGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+@media (max-width: 1100px) {
+  .gameGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 800px) {
+  .gameGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 520px) {
+  .gameGrid { grid-template-columns: 1fr; }
+}
+
+.gameCard {
+  border-radius: 18px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: #fff;
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.gameCover {
+  height: 110px;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(0,0,0,0.03);
+  display: grid;
+  place-items: center;
+  font-size: 38px;
+}
+
+.gameTitle {
+  font-weight: 800;
+}
+
+.gameCardActions {
+  display: flex;
+  gap: 8px;
+}
+
+.chip {
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: #fff;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.chip.danger {
+  border-color: rgba(255,0,0,0.20);
+}
+
+.emptyState {
+  opacity: 0.7;
+  padding: 20px 6px;
+}
