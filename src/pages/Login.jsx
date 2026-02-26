@@ -36,6 +36,12 @@ function Login() {
     navigate("/home");
   };
 
+  const handleContinueAsGuest = () => {
+    localStorage.setItem("loggedIn", "false");
+    localStorage.removeItem("rememberedUser");
+    navigate("/home");
+  };
+
   return (
     <div className="page">
       <div className="card">
@@ -75,7 +81,9 @@ function Login() {
 
         <div className="linkGroup">
           <Link className="link" to="/signup">Sign Up</Link>
-          <Link className="link" to="/home">Continue as Guest</Link>
+          <Link className="link" to="/home" onClick={handleContinueAsGuest}>
+            Continue as Guest
+          </Link>
           <Link className="link" to="/forgot-password">Forgot Password</Link>
         </div>
 

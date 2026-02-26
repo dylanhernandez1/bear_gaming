@@ -29,8 +29,20 @@ function Signup() {
       return;
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
     if (password !== form.confirmPassword) {
       setError("Passwords do not match.");
+      return;
+    }
+
+    const existing = localStorage.getItem("bg.profile");
+    if (existing !== null) {
+      setError("An account already exists. Please log in or delete the existing account.");
       return;
     }
 

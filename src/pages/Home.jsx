@@ -25,6 +25,8 @@ const overlay_data = ["Fortnite", "Minecraft", "Roblox", "Among Us"];
 const Home = () => {
   const [position, setPosition] = useState(0);
   const dashboardRef = useRef(null);
+  const loggedIn = localStorage.getItem("loggedIn") === "true";
+  const profile = loggedIn ? safeParse(localStorage.getItem("bg.profile")) : null;
 
   function onHandleClick(change_amount) {
     setPosition((prev) => {
@@ -37,7 +39,7 @@ const Home = () => {
 
   return (
     <>
-      <Navbar /> 
+      {loggedIn && profile && <Navbar />} 
 
       <div className="dashboard">
         <div className="carousel">
@@ -78,3 +80,11 @@ const Home = () => {
 };
 
 export default Home;
+
+function safeParse(str) {
+  try {
+    return JSON.parse(str);
+  } catch {
+    return null;
+  }
+}
