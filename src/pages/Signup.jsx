@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import AuthHeader from "../components/AuthHeader";
 
 function Signup() {
   const navigate = useNavigate();
@@ -70,7 +71,7 @@ function Signup() {
           </Link>
         </div>
 
-        <h1 className="title">Create Account</h1>
+        <AuthHeader title="Create Account" />
 
         {error && <p style={{ marginTop: 8, marginBottom: 12 }}>{error}</p>}
 

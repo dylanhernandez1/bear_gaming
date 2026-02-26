@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import AuthHeader from "../components/AuthHeader";
 
 function Login() {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ function Login() {
   return (
     <div className="page">
       <div className="card">
-        <h1 className="title">Login</h1>
+        <AuthHeader title="Login" />
 
         {error && <p style={{ marginBottom: 12 }}>{error}</p>}
 
