@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import AuthHeader from "../components/AuthHeader";
 
 function Signup() {
   const navigate = useNavigate();
@@ -29,8 +30,20 @@ function Signup() {
       return;
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
     if (password !== form.confirmPassword) {
       setError("Passwords do not match.");
+      return;
+    }
+
+    const existing = localStorage.getItem("bg.profile");
+    if (existing !== null) {
+      setError("An account already exists. Please log in or delete the existing account.");
       return;
     }
 
@@ -58,7 +71,7 @@ function Signup() {
           </Link>
         </div>
 
-        <h1 className="title">Create Account</h1>
+        <AuthHeader title="Create Account" />
 
         {error && <p style={{ marginTop: 8, marginBottom: 12 }}>{error}</p>}
 

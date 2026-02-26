@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import AuthHeader from "../components/AuthHeader";
 
 function Login() {
   const navigate = useNavigate();
@@ -36,10 +37,16 @@ function Login() {
     navigate("/home");
   };
 
+  const handleContinueAsGuest = () => {
+    localStorage.setItem("loggedIn", "false");
+    localStorage.removeItem("rememberedUser");
+    navigate("/home");
+  };
+
   return (
     <div className="page">
       <div className="card">
-        <h1 className="title">Login</h1>
+        <AuthHeader title="Login" />
 
         {error && <p style={{ marginBottom: 12 }}>{error}</p>}
 
@@ -75,7 +82,9 @@ function Login() {
 
         <div className="linkGroup">
           <Link className="link" to="/signup">Sign Up</Link>
-          <Link className="link" to="/home">Continue as Guest</Link>
+          <Link className="link" to="/home" onClick={handleContinueAsGuest}>
+            Continue as Guest
+          </Link>
           <Link className="link" to="/forgot-password">Forgot Password</Link>
         </div>
 

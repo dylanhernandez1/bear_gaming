@@ -145,7 +145,8 @@ export default function Profile() {
                   if (!ok) return;
                   localStorage.removeItem("bg.profile");
                   localStorage.removeItem("bg.savedGames");
-                  localStorage.setItem("loggedIn", "false");
+                  localStorage.removeItem("rememberedUser");
+                  localStorage.removeItem("loggedIn");
                   navigate("/login");
                 }}
               >

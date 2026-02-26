@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import AuthHeader from '../components/AuthHeader'
 
 function ForgotPassword() {
   const [email, setEmail] = useState('')
@@ -19,7 +20,7 @@ function ForgotPassword() {
             ←
           </Link>
         </div>
-        <h1 className="title">Forgot Password</h1>
+        <AuthHeader title="Forgot Password" />
 
         <p className="helperText">Enter Email Address</p>
 
