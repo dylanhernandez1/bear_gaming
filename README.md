@@ -1,3 +1,11 @@
+# How to Get Application Started
+1. Clone the repository to your local device, and go to the root directory of the project.
+2. If you don't have a recent version of node.js and npm installed (check `node -v` and `npm -v`, recommended versions: `npm -v: 10.9.2`, `node -v: v22.13.1`), go here to install for your respective operating system and preferences: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
+3. Run `npm install` in the root directory of the project.
+4. Run `npm run dev` from the root directory to start the application, and go to http://localhost:5173/.
+
+
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
