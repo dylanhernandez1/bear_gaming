@@ -10,17 +10,12 @@ export default function SettingsDrawer({ open, onClose }) {
     };
 
     const logout = () => {
-        // For prototype: clear “logged-in” flags and go to login
         localStorage.setItem("loggedIn", "false");
-        // optionally clear profile/session items if you want:
-        // localStorage.removeItem("bg.profile");
-
         go("/login");
     };
 
     return (
         <>
-        {/* Backdrop */}
         <div
             className={`drawerBackdrop ${open ? "open" : ""}`}
             onClick={onClose}
@@ -29,7 +24,6 @@ export default function SettingsDrawer({ open, onClose }) {
             aria-hidden={!open}
         />
 
-        {/* Drawer panel */}
         <aside className={`drawer ${open ? "open" : ""}`} aria-hidden={!open}>
             <div className="drawerHeader">
             <div className="drawerUser">

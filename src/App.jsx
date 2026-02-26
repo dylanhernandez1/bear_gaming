@@ -7,10 +7,8 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile.jsx";
 import SavedGames from "./pages/SavedGames.jsx";
+import Settings from "./pages/Settings.jsx";
 
-/**
- * Error boundary to surface runtime errors instead of a black screen.
- */
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -21,8 +19,6 @@ class ErrorBoundary extends React.Component {
   }
   componentDidCatch(error, info) {
     this.setState({ error, info });
-    // keep this console so you (and your teammates) can copy paste the stack
-    // for debugging in the devtools / terminal.
     console.error("Uncaught error in App/ErrorBoundary:", error, info);
   }
   render() {
@@ -71,9 +67,9 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/home" element={<Home />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
-          <Route path="/" element={<HomePlaceholder />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/saved-games" element={<SavedGames />} />
+          <Route path="/settings" element={<Settings />} />
           <Route
             path="*"
             element={
@@ -95,22 +91,6 @@ function App() {
           />
         </Routes>
       </ErrorBoundary>
-    </div>
-  );
-}
-
-/** Basic home placeholder so you can test navigation */
-function HomePlaceholder() {
-  return (
-    <div style={{ padding: 24 }}>
-      <h1 style={{ color: "white" }}>Bear Gaming — Home (placeholder)</h1>
-      <p style={{ color: "#b3b3b3" }}>
-        If you see this, routing and basic rendering works. Try{" "}
-        <Link to="/profile" style={{ color: "#9d00ff" }}>
-          Profile
-        </Link>
-        .
-      </p>
     </div>
   );
 }

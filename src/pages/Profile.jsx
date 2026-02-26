@@ -1,33 +1,31 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import LoggedInNavBar from "../components/NavBar.jsx";
+import LoggedInNavBar from "../components/Navbar.jsx";
 import "../styles.css";
-
-const DEFAULT_PROFILE = {
-  name: "caprisun",
-  email: "caprisun@gmail.com",
-  username: "caprisuneli",
-  password: "********",
-  avatarDataUrl: "",
-};
 
 export default function Profile() {
   const navigate = useNavigate();
 
-  const [profile, setProfile] = useState(() => {
+  useEffect(() => {
+    const loggedIn = localStorage.getItem("loggedIn") === "true";
     const saved = safeParse(localStorage.getItem("bg.profile"));
-    return { ...DEFAULT_PROFILE, ...(saved || {}) };
+    if (!loggedIn || !saved) navigate("/login");
+  }, [navigate]);
+
+  const [profile, setProfile] = useState(() => {
+    return safeParse(localStorage.getItem("bg.profile"));
   });
 
-  // Save profile locally (temporary)
   useEffect(() => {
     localStorage.setItem("bg.profile", JSON.stringify(profile));
   }, [profile]);
 
   const avatarStyle = useMemo(() => {
-    if (!profile.avatarDataUrl) return {};
+    if (!profile?.avatarDataUrl) return {};
     return { backgroundImage: `url(${profile.avatarDataUrl})` };
-  }, [profile.avatarDataUrl]);
+  }, [profile?.avatarDataUrl]);
+
+  if (!profile) return null;
 
   const onUploadAvatar = async (file) => {
     if (!file) return;
@@ -41,7 +39,6 @@ export default function Profile() {
 
       <main className="page">
         <div className="profileGrid">
-          {/* Left card */}
           <section className="card profileLeft">
             <div className="avatarWrap">
               <div
@@ -83,7 +80,6 @@ export default function Profile() {
             </div>
           </section>
 
-          {/* Right card (form) */}
           <section className="card profileRight">
             <FieldRow
               label="Email"
@@ -114,9 +110,9 @@ export default function Profile() {
               value={profile.password}
               buttonText="change password"
               onChange={() => {
-                const next = prompt("Enter new password (prototype):", "");
+                const next = prompt("Enter new password:", "");
                 if (next !== null && next.trim() !== "") {
-                  setProfile((p) => ({ ...p, password: "********" }));
+                  setProfile((p) => ({ ...p, password: next.trim() })); 
                 }
               }}
               isPassword
@@ -128,18 +124,15 @@ export default function Profile() {
                 type="button"
                 onClick={() => navigate("/saved-games")}
               >
-                YOUR SAVED GAMES
+                YOUR SAVED GAMES 🔖
               </button>
 
               <button
-                className="btnSmall"
+                className="btnWide"
                 type="button"
-                onClick={() => {
-                  // just a helper for now: open drawer via gear in navbar
-                  alert("Use the ⚙️ gear in the navbar to open Settings.");
-                }}
+                onClick={() => navigate("/settings")}
               >
-                Settings
+                Settings ⚙️
               </button>
 
               <button

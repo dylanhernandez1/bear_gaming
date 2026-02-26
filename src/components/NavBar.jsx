@@ -27,7 +27,7 @@ export default function LoggedInNavBar() {
                 className="navIcon"
                 onClick={() => {
                 closeDrawer();
-                navigate("/");
+                navigate("/home");
                 }}
                 aria-label="Go to Home"
                 title="Home"
@@ -37,7 +37,7 @@ export default function LoggedInNavBar() {
             </button>
 
             <button className="navIcon" aria-label="Filter" title="Filter" type="button">
-                ⏳
+                🌪️
             </button>
             </div>
 
