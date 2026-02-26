@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, createRef} from "react";
 import minecraft from "./dashboard_images/minecraft2048x2048.png";
 import roblox from "./dashboard_images/Roblox.png";
 import fortnite from "./dashboard_images/Fortnite.jpg";
+import amongUs from "./dashboard_images/AmongUs.png";
 import left_arrow from "./left-arrow.png";
 import right_arrow from "./right-arrow.png";
 import "./dashboard.css"
@@ -16,6 +17,9 @@ const data = [
 	},
 	{
 		src: roblox
+	},
+	{
+		src: amongUs
 	}
 ];
 
@@ -23,7 +27,7 @@ const totalWidth = width_size * data.length;
 const visibleWidth = 2.5 * width_size;
 const max_position = totalWidth - visibleWidth;
 
-const overlay_data = ["Fortnite", "Minecraft", "Roblox"];
+const overlay_data = ["Fortnite", "Minecraft", "Roblox", "Among Us"];
 
 const Dashboard = () => {
 	const [position, setPosition] = useState(0);
