@@ -29,7 +29,7 @@ const max_position = totalWidth - visibleWidth;
 
 const overlay_data = ["Fortnite", "Minecraft", "Roblox", "Among Us"];
 
-const Dashboard = () => {
+const Home = () => {
 	const [position, setPosition] = useState(0);
 	const dashboardRef = useRef(null);
 
@@ -79,4 +79,4 @@ const Dashboard = () => {
 	);
 };
 
-export default Dashboard;
+export default Home;
