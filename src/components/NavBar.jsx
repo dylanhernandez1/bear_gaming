@@ -1,15 +1,22 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSearch } from "../context/SearchContext";
+import { useFilters } from "../context/FilterContext";
 import SettingsDrawer from "./SettingsDrawer.jsx";
+import FilterDrawer from "./Filterdrawer.jsx";
 import "./../styles.css";
 
 export default function LoggedInNavBar() {
     const navigate = useNavigate();
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [filterOpen, setFilterOpen] = useState(false);
 
     const closeDrawer = () => setDrawerOpen(false);
+    const closeFilter = () => setFilterOpen(false);
 
-    const [search, setSearch] = useState(() => localStorage.getItem("bg.search") || "");
+    const { search, updateSearch } = useSearch();
+    const { hasActiveFilters } = useFilters();
+
     useEffect(() => {
         localStorage.setItem("bg.search", search);
     }, [search]);
@@ -27,6 +34,7 @@ export default function LoggedInNavBar() {
                 className="navIcon"
                 onClick={() => {
                 closeDrawer();
+                closeFilter();
                 navigate("/home");
                 }}
                 aria-label="Go to Home"
@@ -36,23 +44,47 @@ export default function LoggedInNavBar() {
                 🧸
             </button>
 
-            <button className="navIcon" aria-label="Filter" title="Filter" type="button">
+            {/* Filter button — badge shows when filters are active */}
+            <button
+                className="navIcon"
+                aria-label="Filter"
+                title="Filter"
+                type="button"
+                onClick={() => {
+                    closeDrawer();
+                    setFilterOpen((v) => !v);
+                }}
+                style={{ position: "relative" }}
+            >
                 🌪️
+                {hasActiveFilters && (
+                    <span style={{
+                        position: "absolute",
+                        top: "2px", right: "2px",
+                        width: "8px", height: "8px",
+                        borderRadius: "50%",
+                        background: "#4a6fa5",
+                        border: "2px solid #0f0f1a",
+                        display: "block",
+                    }} />
+                )}
             </button>
             </div>
 
             <div className="topNavSearch">
-            <span className="searchIcon" aria-hidden="true">
-                🔎
-            </span>
-            <input
-                className="searchInput"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search"
-                aria-label="Search"
-            />
-            </div>
+          <span className="searchIcon">🔎</span>
+          <input
+            className="searchInput"
+            value={search}
+            onChange={(e) => {
+              updateSearch(e.target.value);
+              if (window.location.pathname !== "/home") {
+                navigate("/home");
+              }
+            }}
+            placeholder="Search"
+          />
+        </div>
 
             <div className="topNavRight">
             <span className="navHello" title="Signed in user">
@@ -84,13 +116,17 @@ export default function LoggedInNavBar() {
                 aria-label="Settings"
                 title="Settings"
                 type="button"
-                onClick={() => setDrawerOpen((v) => !v)}
+                onClick={() => {
+                    closeFilter();
+                    setDrawerOpen((v) => !v);
+                }}
             >
                 ⚙️
             </button>
             </div>
         </header>
 
+        <FilterDrawer open={filterOpen} onClose={closeFilter} />
         <SettingsDrawer open={drawerOpen} onClose={closeDrawer} />
         </>
     );

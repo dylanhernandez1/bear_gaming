@@ -68,3 +68,30 @@
 	display: block;
 	overflow: hidden;
 }
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.search-input {
+  width: 400px;
+  padding: 12px 20px;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  background-color: #1f1f1f;
+  color: white;
+}
+
+.search-input::placeholder {
+  color: #aaa;
+}
+
+.no-results {
+  color: white;
+  font-size: 20px;
+  padding: 40px;
+}
