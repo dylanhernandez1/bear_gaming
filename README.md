@@ -4,7 +4,11 @@
 3. Run `npm install` in the root directory of the project.
 4. Run `npm run dev` from the root directory to start the application, and go to http://localhost:5173/.
 
-
+# Team Contributions
+- **Dylan:** Game JSON objects, Game Details page, searching and filtering functionality, write review functionality
+- **Yaneli:**
+- **Xio:**
+- **Manu:**
 
 # React + Vite
 
