@@ -3,6 +3,7 @@
 import { Routes, Route, Link, Navigate } from "react-router-dom";
 import { SearchProvider } from "./context/SearchContext";
 import { FilterProvider } from "./context/FilterContext.jsx";
+import { SavedGamesProvider } from "./context/Savedgamescontext.jsx";
 
 import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
@@ -62,6 +63,7 @@ import GamePage from "./pages/GamePage";
 
   function App() {
     return (
+      <SavedGamesProvider>
       <FilterProvider>
       <SearchProvider>
       <div className="app">
@@ -101,6 +103,7 @@ import GamePage from "./pages/GamePage";
       </div>
       </SearchProvider>
       </FilterProvider>
+      </SavedGamesProvider>
     );
   }
 

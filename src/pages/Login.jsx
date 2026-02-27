@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSavedGames } from "../context/Savedgamescontext";
 
 function Login() {
   const navigate = useNavigate();
+  const { refreshUser } = useSavedGames();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [remember, setRemember] = useState(false); 
+  const [remember, setRemember] = useState(false);
   const [error, setError] = useState("");
 
   const handleLogin = () => {
@@ -30,8 +32,11 @@ function Login() {
       return;
     }
 
-    localStorage.setItem("loggedIn", "true"); 
+    localStorage.setItem("loggedIn", "true");
     if (remember) localStorage.setItem("rememberedUser", profile.username);
+
+    // Reload saved games for the newly logged-in user
+    refreshUser();
 
     navigate("/home");
   };

@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
+import SaveBookmarkButton from "../components/Savebookmarkbutton.jsx";
 import { games } from "../data/games/game.jsx";
 
 const StarRating = ({ rating, max = 5 }) => (
@@ -13,8 +14,18 @@ const StarRating = ({ rating, max = 5 }) => (
   </span>
 );
 
+function getStoredUsername() {
+  try {
+    const loggedIn = localStorage.getItem("loggedIn") === "true";
+    const profile = JSON.parse(localStorage.getItem("bg.profile"));
+    return loggedIn && profile?.username ? profile.username : "guest";
+  } catch {
+    return "guest";
+  }
+}
+
 const WriteReviewModal = ({ game, onClose, onSubmit }) => {
-  const [username, setUsername] = useState("");
+  const username = getStoredUsername();
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(5);
   const [platform, setPlatform] = useState(game.prices?.[0]?.platform || "");
@@ -22,7 +33,6 @@ const WriteReviewModal = ({ game, onClose, onSubmit }) => {
   const [isAnonymous, setIsAnonymous] = useState(false);
 
   const handleSubmit = () => {
-    if (!isAnonymous && !username.trim()) return;
     if (!comment.trim()) return;
     onSubmit({ user: isAnonymous ? "Anonymous" : username, comment, rating, platform });
     onClose();
@@ -46,18 +56,36 @@ const WriteReviewModal = ({ game, onClose, onSubmit }) => {
       >
         <h2 style={{ margin: "0 0 24px", fontSize: "22px" }}>✏️ Write a Review</h2>
 
-        {/* Username field — hidden when anonymous */}
-        {!isAnonymous && (
-          <>
-            <label style={labelStyle}>Username</label>
-            <input
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="@yourname"
-              style={inputStyle}
-            />
-          </>
-        )}
+        {/* Username — always visible, never editable */}
+        <label style={labelStyle}>Posting as</label>
+        <div style={{
+          display: "flex", alignItems: "center", gap: "10px",
+          padding: "10px 14px", marginBottom: "16px",
+          background: "#0f0f1a", border: "1px solid #2a2a3e",
+          borderRadius: "8px", opacity: isAnonymous ? 0.4 : 1,
+          transition: "opacity 0.2s",
+        }}>
+          <div style={{
+            width: "28px", height: "28px", borderRadius: "50%",
+            background: "#2a2a4e", border: "1px solid #444",
+            display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px",
+            flexShrink: 0,
+          }}>👤</div>
+          <span style={{
+            fontSize: "15px", fontWeight: "600",
+            color: isAnonymous ? "#666" : "white",
+            textDecoration: isAnonymous ? "line-through" : "none",
+            transition: "color 0.2s",
+          }}>
+            @{username}
+          </span>
+          <span style={{
+            marginLeft: "auto", fontSize: "11px", color: "#555",
+            fontStyle: "italic",
+          }}>
+            read-only
+          </span>
+        </div>
 
         {/* Anonymous toggle */}
         <div
@@ -173,18 +201,19 @@ const GamePage = () => {
       <Navbar />
       <div style={{ padding: "40px 48px", color: "white", maxWidth: "1200px", margin: "0 auto" }}>
 
-        {/* ── Two-column layout ── */}
         <div style={{ display: "flex", gap: "0", alignItems: "stretch" }}>
-
-          {/* LEFT column: title + big image */}
           <div style={{
             width: "320px", flexShrink: 0,
             borderRight: "1px solid #2a2a3e",
             paddingRight: "36px", paddingBottom: "32px",
           }}>
-            <h1 style={{ margin: "0 0 20px", fontSize: "28px", fontWeight: "700" }}>
-              {game.title}
-            </h1>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
+              <h1 style={{ margin: 0, fontSize: "28px", fontWeight: "700" }}>
+                {game.title}
+              </h1>
+              <SaveBookmarkButton gameId={game.id} size={20} />
+            </div>
+
             <img
               src={game.image}
               alt={game.title}
@@ -196,7 +225,6 @@ const GamePage = () => {
             />
           </div>
 
-          {/* RIGHT column */}
           <div style={{ flex: 1, paddingLeft: "36px", paddingBottom: "32px" }}>
             <h3 style={sectionHeader}>Tags</h3>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "24px" }}>
@@ -238,10 +266,8 @@ const GamePage = () => {
           </div>
         </div>
 
-        {/* ── Full-width divider ── */}
         <div style={{ borderTop: "1px solid #2a2a3e", margin: "0 0 32px" }} />
 
-        {/* ── Reviews section ── */}
         <div>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
             <h3 style={{ ...sectionHeader, margin: 0 }}>Reviews</h3>

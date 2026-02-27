@@ -1,42 +1,29 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import LoggedInNavBar from "../components/Navbar.jsx";
+import SaveBookmarkButton from "../components/Savebookmarkbutton.jsx";
+import { useSavedGames } from "../context/Savedgamescontext.jsx";
+import { games } from "../data/games/game.jsx";
 import "../styles.css";
 
-const DEFAULT_SAVED = [
-  { id: "minecraft", title: "Minecraft", cover: "🟩" },
-  { id: "amongus", title: "Among Us", cover: "🔴" },
-];
-
 export default function SavedGames() {
-  const [saved, setSaved] = useState(() => {
-    const existing = safeParse(localStorage.getItem("bg.savedGames"));
-    return Array.isArray(existing) ? existing : [];
-  });
-
-  // Seed defaults once (hardcoded for prototype)
-  useEffect(() => {
-    if (saved.length === 0) {
-      setSaved(DEFAULT_SAVED);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("bg.savedGames", JSON.stringify(saved));
-  }, [saved]);
-
+  const { savedIds, username } = useSavedGames();
+  const navigate = useNavigate();
   const [query, setQuery] = useState("");
 
-  useEffect(() => {
-    const navQ = localStorage.getItem("bg.search") || "";
-    if (navQ) setQuery(navQ);
-  }, []);
+  // Join saved IDs against real game data so we always show up-to-date info
+  const savedGames = useMemo(
+    () => savedIds.map((id) => games.find((g) => g.id === id)).filter(Boolean),
+    [savedIds]
+  );
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return saved;
-    return saved.filter((g) => g.title.toLowerCase().includes(q));
-  }, [saved, query]);
+    if (!q) return savedGames;
+    return savedGames.filter((g) => g.title.toLowerCase().includes(q));
+  }, [savedGames, query]);
+
+  const isGuest = username === "guest";
 
   return (
     <>
@@ -44,7 +31,25 @@ export default function SavedGames() {
 
       <main className="saved-page">
         <div className="pageHeader">
-          <h1 className="pageTitle">Saved Games</h1>
+          <div>
+            <h1 className="pageTitle">Saved Games</h1>
+            {isGuest ? (
+              <p style={{ color: "#888", fontSize: "13px", margin: "4px 0 0" }}>
+                Browsing as guest —{" "}
+                <span
+                  onClick={() => navigate("/login")}
+                  style={{ color: "#7eb8f7", cursor: "pointer", textDecoration: "underline" }}
+                >
+                  log in
+                </span>{" "}
+                to keep your saves across devices.
+              </p>
+            ) : (
+              <p style={{ color: "#888", fontSize: "13px", margin: "4px 0 0" }}>
+                Saved as <strong style={{ color: "#ccc" }}>@{username}</strong>
+              </p>
+            )}
+          </div>
 
           <div className="savedSearchBar">
             <span aria-hidden="true">🔎</span>
@@ -58,48 +63,77 @@ export default function SavedGames() {
           </div>
         </div>
 
-        <section className="gameGrid">
-          {filtered.map((g) => (
-            <article className="gameCard" key={g.id}>
-              <div className="gameCover" aria-hidden="true">
-                {g.cover || "🎮"}
-              </div>
-              <div className="gameTitle">{g.title}</div>
-
-              <div className="gameCardActions">
-                <button
-                  className="chip"
-                  type="button"
-                  onClick={() => alert(`Open Game page later: ${g.id}`)}
+        {savedGames.length === 0 ? (
+          <div className="emptyState" style={{ marginTop: "60px", textAlign: "center" }}>
+            <div style={{ fontSize: "48px", marginBottom: "16px" }}>🔖</div>
+            <p style={{ color: "#888", fontSize: "16px" }}>No saved games yet.</p>
+            <p style={{ color: "#666", fontSize: "14px" }}>
+              Hit the bookmark icon on any game to save it here.
+            </p>
+          </div>
+        ) : (
+          <section className="gameGrid">
+            {filtered.map((game) => (
+              <article
+                key={game.id}
+                className="gameCard"
+                style={{ position: "relative", cursor: "pointer" }}
+                onClick={() => navigate(`/game/${game.id}`)}
+              >
+                {/* Game cover image */}
+                <div
+                  className="gameCover"
+                  style={{ padding: 0, overflow: "hidden", background: "#1a1a2e" }}
                 >
-                  View
-                </button>
-                <button
-                  className="chip danger"
-                  type="button"
-                  onClick={() =>
-                    setSaved((prev) => prev.filter((x) => x.id !== g.id))
-                  }
-                >
-                  Remove
-                </button>
-              </div>
-            </article>
-          ))}
+                  <img
+                    src={game.image}
+                    alt={game.title}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  />
+                </div>
 
-          {filtered.length === 0 && (
-            <div className="emptyState">No saved games match “{query}”.</div>
-          )}
-        </section>
+                <div className="gameTitle">{game.title}</div>
+
+                {/* Rating + hours pill */}
+                <div style={{ display: "flex", gap: "8px", padding: "0 12px 4px", flexWrap: "wrap" }}>
+                  <span style={{
+                    fontSize: "12px", color: "#f5c518", background: "#1e1e30",
+                    borderRadius: "10px", padding: "2px 8px",
+                  }}>
+                    ★ {game.rating}
+                  </span>
+                  <span style={{
+                    fontSize: "12px", color: "#aaa", background: "#1e1e30",
+                    borderRadius: "10px", padding: "2px 8px",
+                  }}>
+                    ~{game.hoursPlayedAvg}h
+                  </span>
+                </div>
+
+                <div className="gameCardActions" onClick={(e) => e.stopPropagation()}>
+                  <button
+                    className="chip"
+                    type="button"
+                    onClick={() => navigate(`/game/${game.id}`)}
+                  >
+                    View
+                  </button>
+                </div>
+
+                {/* Bookmark toggle — top-right corner, unsaves on click */}
+                <SaveBookmarkButton
+                  gameId={game.id}
+                  style={{ position: "absolute", top: "8px", right: "8px" }}
+                />
+              </article>
+            ))}
+
+            {filtered.length === 0 && savedGames.length > 0 && (
+              <div className="emptyState">No saved games match "{query}".</div>
+            )}
+          </section>
+        )}
       </main>
     </>
   );
-}
-
-function safeParse(str) {
-  try {
-    return JSON.parse(str);
-  } catch {
-    return null;
-  }
 }
