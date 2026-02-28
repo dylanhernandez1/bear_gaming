@@ -33,11 +33,18 @@ function Login() {
     }
 
     localStorage.setItem("loggedIn", "true");
+    localStorage.removeItem("bg.guest");
     if (remember) localStorage.setItem("rememberedUser", profile.username);
 
-    // Reload saved games for the newly logged-in user
     refreshUser();
+    navigate("/home");
+  };
 
+  const handleGuest = () => {
+    localStorage.removeItem("loggedIn");
+    localStorage.removeItem("rememberedUser");
+    localStorage.setItem("bg.guest", "true");
+    refreshUser();
     navigate("/home");
   };
 
@@ -80,7 +87,24 @@ function Login() {
 
         <div className="linkGroup">
           <Link className="link" to="/signup">Sign Up</Link>
-          <Link className="link" to="/home">Continue as Guest</Link>
+          <button
+            className="link"
+            type="button"
+            onClick={handleGuest}
+            style={{
+              background: "none",
+              border: "none",
+              padding: 0,
+              margin: 0,
+              font: "inherit",
+              cursor: "pointer",
+              textAlign: "left",
+              display: "block",
+              width: "fit-content",
+            }}
+          >
+            Continue as Guest
+          </button>
           <Link className="link" to="/forgot-password">Forgot Password</Link>
         </div>
 

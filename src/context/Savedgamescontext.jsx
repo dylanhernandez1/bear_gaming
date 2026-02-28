@@ -2,7 +2,6 @@ import { createContext, useContext, useState, useEffect, useCallback } from "rea
 
 const SavedGamesContext = createContext(null);
 
-// Key is per-user so saved games don't bleed between accounts
 function storageKey(username) {
   return `bg.savedGames.${username || "guest"}`;
 }
@@ -19,8 +18,11 @@ function loadSaved(username) {
 
 function getCurrentUsername() {
   try {
-    const profile = JSON.parse(localStorage.getItem("bg.profile"));
+    // Explicit guest flag takes priority — clears any stale login state
+    if (localStorage.getItem("bg.guest") === "true") return "guest";
+
     const loggedIn = localStorage.getItem("loggedIn") === "true";
+    const profile = JSON.parse(localStorage.getItem("bg.profile"));
     return loggedIn && profile?.username ? profile.username : "guest";
   } catch {
     return "guest";
@@ -31,8 +33,6 @@ export function SavedGamesProvider({ children }) {
   const [username, setUsername] = useState(getCurrentUsername);
   const [savedIds, setSavedIds] = useState(() => loadSaved(getCurrentUsername()));
 
-  // Re-load saved games whenever the active user changes
-  // (e.g. after login/logout without full page reload)
   useEffect(() => {
     const handleStorage = () => {
       const currentUser = getCurrentUsername();
@@ -43,15 +43,11 @@ export function SavedGamesProvider({ children }) {
     return () => window.removeEventListener("storage", handleStorage);
   }, []);
 
-  // Persist to localStorage on every change
   useEffect(() => {
     localStorage.setItem(storageKey(username), JSON.stringify(savedIds));
   }, [savedIds, username]);
 
-  const isSaved = useCallback(
-    (id) => savedIds.includes(id),
-    [savedIds]
-  );
+  const isSaved = useCallback((id) => savedIds.includes(id), [savedIds]);
 
   const toggleSave = useCallback((id) => {
     setSavedIds((prev) =>
@@ -63,7 +59,6 @@ export function SavedGamesProvider({ children }) {
     setSavedIds((prev) => prev.filter((x) => x !== id));
   }, []);
 
-  // Call this after login/logout to reload the right user's saved games
   const refreshUser = useCallback(() => {
     const currentUser = getCurrentUsername();
     setUsername(currentUser);

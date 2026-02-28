@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSearch } from "../context/SearchContext";
 import { useFilters } from "../context/FilterContext";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 import SettingsDrawer from "./SettingsDrawer.jsx";
 import FilterDrawer from "./Filterdrawer.jsx";
 import "./../styles.css";
@@ -16,15 +17,11 @@ export default function LoggedInNavBar() {
 
     const { search, updateSearch } = useSearch();
     const { hasActiveFilters } = useFilters();
+    const username = useCurrentUser();
 
     useEffect(() => {
         localStorage.setItem("bg.search", search);
     }, [search]);
-
-    const username = useMemo(() => {
-        const p = safeParse(localStorage.getItem("bg.profile"));
-        return p?.username || "user";
-    }, []);
 
     return (
         <>
@@ -44,7 +41,6 @@ export default function LoggedInNavBar() {
                 🧸
             </button>
 
-            {/* Filter button — badge shows when filters are active */}
             <button
                 className="navIcon"
                 aria-label="Filter"
@@ -72,57 +68,57 @@ export default function LoggedInNavBar() {
             </div>
 
             <div className="topNavSearch">
-          <span className="searchIcon">🔎</span>
-          <input
-            className="searchInput"
-            value={search}
-            onChange={(e) => {
-              updateSearch(e.target.value);
-              if (window.location.pathname !== "/home") {
-                navigate("/home");
-              }
-            }}
-            placeholder="Search"
-          />
-        </div>
+                <span className="searchIcon">🔎</span>
+                <input
+                    className="searchInput"
+                    value={search}
+                    onChange={(e) => {
+                        updateSearch(e.target.value);
+                        if (window.location.pathname !== "/home") {
+                            navigate("/home");
+                        }
+                    }}
+                    placeholder="Search"
+                />
+            </div>
 
             <div className="topNavRight">
-            <span className="navHello" title="Signed in user">
-                {username}
-            </span>
+                <span className="navHello" title="Signed in user">
+                    {username}
+                </span>
 
-            <Link
-                className="navIconLink"
-                to="/saved-games"
-                aria-label="Saved Games"
-                title="Saved Games"
-                onClick={closeDrawer}
-            >
-                🔖
-            </Link>
+                <Link
+                    className="navIconLink"
+                    to="/saved-games"
+                    aria-label="Saved Games"
+                    title="Saved Games"
+                    onClick={closeDrawer}
+                >
+                    🔖
+                </Link>
 
-            <Link
-                className="navIconLink"
-                to="/profile"
-                aria-label="Profile"
-                title="Profile"
-                onClick={closeDrawer}
-            >
-                👤
-            </Link>
+                <Link
+                    className="navIconLink"
+                    to="/profile"
+                    aria-label="Profile"
+                    title="Profile"
+                    onClick={closeDrawer}
+                >
+                    👤
+                </Link>
 
-            <button
-                className="navIcon"
-                aria-label="Settings"
-                title="Settings"
-                type="button"
-                onClick={() => {
-                    closeFilter();
-                    setDrawerOpen((v) => !v);
-                }}
-            >
-                ⚙️
-            </button>
+                <button
+                    className="navIcon"
+                    aria-label="Settings"
+                    title="Settings"
+                    type="button"
+                    onClick={() => {
+                        closeFilter();
+                        setDrawerOpen((v) => !v);
+                    }}
+                >
+                    ⚙️
+                </button>
             </div>
         </header>
 
@@ -130,12 +126,4 @@ export default function LoggedInNavBar() {
         <SettingsDrawer open={drawerOpen} onClose={closeDrawer} />
         </>
     );
-}
-
-function safeParse(str) {
-  try {
-    return JSON.parse(str);
-  } catch {
-    return null;
-  }
 }
