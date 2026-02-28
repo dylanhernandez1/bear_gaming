@@ -7,7 +7,7 @@
 
 # Team Contributions
 
-- **Dylan:** Game JSON objects, Game Details page, searching and filtering functionality, write review functionality, saved game functionality
+- **Dylan:** Game JSON objects, Game Details page, searching and filtering functionality, write review functionality, saved game functionality, Guest login
 - **Yaneli:**
 - **Xio:**
 - **Manu:**
