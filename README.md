@@ -7,10 +7,10 @@
 
 # Team Contributions
 
-- **Dylan:** Game JSON objects, Game Details page, searching and filtering functionality, write review functionality, saved game functionality, Guest login
-- **Yaneli:**
-- **Xio:**
-- **Manu:**
+- **Dylan:** Game JSON objects, Game Details page, searching and filtering functionality, write review functionality, saved game bookmark functionality, Guest logic
+- **Yaneli:** Style sheet, profile page, saved games page, settings pop up, navbar functionality
+- **Xio:** Login page, signup page, forgot password page
+- **Manu:** Home page 
 
 # React + Vite
 

@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useCurrentUser } from "../hooks/useCurrentUser";
+import BookMarkIcon from "./Icons/BookMarkIcon.jsx";
 import "./../styles.css";
 
 export default function SettingsDrawer({ open, onClose }) {
@@ -53,14 +54,12 @@ export default function SettingsDrawer({ open, onClose }) {
                     <>
                         <DrawerItem icon="🔑" label="Log In" onClick={() => go("/login")} />
                         <DrawerItem icon="✏️" label="Sign Up" onClick={() => go("/signup")} />
-                        <DrawerItem icon="🔖" label="Saved Games" onClick={() => go("/saved-games")} />
+                        <DrawerItem icon={<BookMarkIcon />} label="Saved Games" onClick={() => go("/saved-games")} />
                     </>
                 ) : (
                     <>
                         <DrawerItem icon="👤" label="Account" onClick={() => go("/profile")} />
-                        <DrawerItem icon="🛡️" label="Security and Privacy" onClick={() => {}} muted />
-                        <DrawerItem icon="🔖" label="Saved Games" onClick={() => go("/saved-games")} />
-                        <DrawerItem icon="✍️" label="Your Reviews" onClick={() => {}} muted />
+                        <DrawerItem icon={<BookMarkIcon />} label="Saved Games" onClick={() => go("/saved-games")} />
                         <DrawerItem icon="⏻" label="Logout" onClick={logout} danger />
                     </>
                 )}
