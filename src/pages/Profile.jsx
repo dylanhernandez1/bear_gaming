@@ -1,10 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoggedInNavBar from "../components/Navbar.jsx";
+import SettingsDrawer from "../components/SettingsDrawer.jsx";
+import BookMarkIcon from "../components/Icons/BookMarkIcon.jsx";
 import "../styles.css";
 
 export default function Profile() {
   const navigate = useNavigate();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const closeDrawer = () => setDrawerOpen(false);
 
   useEffect(() => {
     const loggedIn = localStorage.getItem("loggedIn") === "true";
@@ -123,14 +127,22 @@ export default function Profile() {
                 className="btnWide"
                 type="button"
                 onClick={() => navigate("/saved-games")}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "8px",
+                  }}
               >
-                YOUR SAVED GAMES 🔖
+                YOUR SAVED GAMES <BookMarkIcon />
               </button>
 
               <button
                 className="btnWide"
                 type="button"
-                onClick={() => navigate("/settings")}
+                onClick={() => {
+                  setDrawerOpen(true);
+                }}
               >
                 Settings ⚙️
               </button>
@@ -155,6 +167,8 @@ export default function Profile() {
           </section>
         </div>
       </main>
+
+      <SettingsDrawer open={drawerOpen} onClose={closeDrawer} />
     </>
   );
 }

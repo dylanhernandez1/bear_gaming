@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import Navbar from "../components/Navbar";
 import SaveBookmarkButton from "../components/Savebookmarkbutton.jsx";
 import { games } from "../data/games/game.jsx";
@@ -168,19 +168,18 @@ const submitBtnStyle = {
 const GamePage = () => {
   const { id } = useParams();
   const [showModal, setShowModal] = useState(false);
-  const [extraReviews, setExtraReviews] = useState([]);
-
-  const game = games.find((g) => g.id === id);
-
-  useEffect(() => {
-    if (!id) return;
+  const [extraReviews, setExtraReviews] = useState(() => {
+    if (!id) return [];
     try {
       const saved = localStorage.getItem(`reviews_${id}`);
-      if (saved) setExtraReviews(JSON.parse(saved));
+      return saved ? JSON.parse(saved) : [];
     } catch (e) {
       console.error("Failed to load reviews", e);
+      return [];
     }
-  }, [id]);
+  });
+
+  const game = games.find((g) => g.id === id);
 
   if (!game) return <h2>Game not found</h2>;
 

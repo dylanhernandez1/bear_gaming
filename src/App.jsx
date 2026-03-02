@@ -4,14 +4,12 @@ import { Routes, Route, Link, Navigate } from "react-router-dom";
 import { SearchProvider } from "./context/SearchContext";
 import { FilterProvider } from "./context/FilterContext.jsx";
 import { SavedGamesProvider } from "./context/Savedgamescontext.jsx";
-
 import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile.jsx";
 import SavedGames from "./pages/SavedGames.jsx";
-import Settings from "./pages/Settings.jsx";
 import GamePage from "./pages/GamePage";
 
   class ErrorBoundary extends React.Component {
@@ -77,7 +75,6 @@ import GamePage from "./pages/GamePage";
             <Route path="*" element={<Navigate to="/login" replace />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/saved-games" element={<SavedGames />} />
-            <Route path="/settings" element={<Settings />} />
             <Route path="/game/:id" element={<GamePage />} />
             <Route
               path="*"

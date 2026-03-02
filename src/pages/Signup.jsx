@@ -44,7 +44,11 @@ function Signup() {
     };
 
     localStorage.setItem("bg.profile", JSON.stringify(profile));
-    localStorage.setItem("loggedIn", "true"); 
+    localStorage.setItem("loggedIn", "true");
+    localStorage.removeItem("bg.guest"); 
+
+    // If you added the auth-change listener in useCurrentUser:
+    // window.dispatchEvent(new Event("auth-change"));
 
     navigate("/home");
   };
