@@ -18,9 +18,7 @@ function loadSaved(username) {
 
 function getCurrentUsername() {
   try {
-    // Explicit guest flag takes priority — clears any stale login state
     if (localStorage.getItem("bg.guest") === "true") return "guest";
-
     const loggedIn = localStorage.getItem("loggedIn") === "true";
     const profile = JSON.parse(localStorage.getItem("bg.profile"));
     return loggedIn && profile?.username ? profile.username : "guest";
