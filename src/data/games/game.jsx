@@ -14,8 +14,8 @@ export const games = [
     rating: 4.6,
     hoursPlayedAvg: 120,
     prices: [
-      { platform: "Epic Games", price: "Free" },
-      { platform: "PlayStation Store", price: "$0" },
+      { platform: "Epic Games", price: "Free", url: "https://store.epicgames.com/en-US/p/fortnite"},
+      { platform: "PlayStation Store", price: "$0", url: "https://store.playstation.com/en-us/product/UP1477-PPSA01922_00-FNBNDL0000000000"},
     ],
     reviews: [
       {
@@ -40,9 +40,9 @@ export const games = [
     rating: 4.9,
     hoursPlayedAvg: 70,
     prices: [
-      { platform: "Nintendo Switch eShop", price: "$30" },
-      { platform: "Xbox Store", price: "$20" },
-      { platform: "Steam", price: "$25" },
+      { platform: "Nintendo Switch eShop", price: "$29", url: "https://www.nintendo.com/us/store/products/minecraft-switch/"},
+      { platform: "Xbox Store", price: "$20" , url: "https://www.xbox.com/en-us/games/store/minecraft/9mvxmvt8zkwc"},
+      { platform: "Steam", price: "$25" , url: "https://store.steampowered.com/app/1672970/Minecraft_Dungeons/"},
     ],
     reviews: [
       {
@@ -66,7 +66,7 @@ export const games = [
       "Roblox is an online platform where users create and play games made by others.",
     rating: 4.3,
     hoursPlayedAvg: 90,
-    prices: [{ platform: "Official", price: "Free" }],
+    prices: [{ platform: "Official", price: "Free", url: "https://www.roblox.com/download"}],
     reviews: []
   },
   {
@@ -78,7 +78,7 @@ export const games = [
       "Among Us is a social deduction game where players identify the impostor.",
     rating: 4.5,
     hoursPlayedAvg: 40,
-    prices: [{ platform: "Steam", price: "$5" }],
+    prices: [{ platform: "Steam", price: "$5", url: "https://store.steampowered.com/app/945360/Among_Us/"}],
     reviews: []
   }
 ];

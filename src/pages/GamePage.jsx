@@ -186,7 +186,7 @@ const GamePage = () => {
   const allReviews = [...extraReviews, ...(game.reviews || [])];
 	const calculateRating = 
 		allReviews.length > 0 ? 
-			( allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length) : game.rating;
+			( allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length).toPrecision(2) : game.rating;
   const handleReviewSubmit = (review) => {
     const updated = [review, ...extraReviews];
     setExtraReviews(updated);

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import SaveBookmarkButton from "../components/Savebookmarkbutton.jsx";
@@ -25,7 +25,7 @@ function getMinPrice(game) {
 const Home = () => {
 	const dashboardRef = useRef(null);
 	const { search } = useSearch();
-	const { filters } = useFilters();
+	const { filters, updateFilters } = useFilters();
 	const navigate = useNavigate();
 	
 	const filteredGames = games.filter((game) => {
@@ -46,10 +46,18 @@ const Home = () => {
 		if (filters.maxHours !== Infinity && game.hoursPlayedAvg > filters.maxHours) return false;
 		return true;
 	});
-
+	const removeTag = (tagToRemove) => {
+		updateFilters({
+			tags: filters.tags.filter((tag) => tag !== tagToRemove)
+		});
+	};
 	// SCROLLING BEHAVIOR RIGHT HERE
 	const [currentIndex, setCurrentIndex] = useState(0);
-	
+
+	useEffect(() => {
+		setCurrentIndex(0);
+	}, [filters, search]);
+
 	const card_width = 300;
 	const gap = 32;
 	const slider_movement = card_width + gap;
@@ -76,6 +84,9 @@ const Home = () => {
 					{filters.tags.map((tag) => (
 						<span key={tag} className="tags">
 							{tag}
+							<span className="remove-tags" onClick={() => removeTag(tag)}>
+								✕
+							</span>
 						</span>
 					))}
 					</div>
