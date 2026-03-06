@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import LoggedInNavBar from "../components/Navbar.jsx";
+import LoggedInNavBar from "../components/NavBar.jsx";
 import SettingsDrawer from "../components/SettingsDrawer.jsx";
 import BookMarkIcon from "../components/Icons/BookMarkIcon.jsx";
 import "../styles.css";
