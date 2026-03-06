@@ -49,7 +49,6 @@ const Home = () => {
 
 	// SCROLLING BEHAVIOR RIGHT HERE
 	const [currentIndex, setCurrentIndex] = useState(0);
-	const [index, setIndex] = useState(0);
 	
 	const card_width = 300;
 	const gap = 32;
@@ -72,6 +71,15 @@ const Home = () => {
 		<>
 		<Navbar />
 			<div className="dashboard">
+				{filters.tags.length > 0 && (
+					<div className="active-tags">
+					{filters.tags.map((tag) => (
+						<span key={tag} className="tags">
+							{tag}
+						</span>
+					))}
+					</div>
+				)}
 				<div className="carousel">
 					<button onClick={handleLeft}>
 						<img src={left_arrow} alt="Clickable left button" className="slider-buttons left" />
