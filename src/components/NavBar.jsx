@@ -28,24 +28,22 @@ export default function LoggedInNavBar() {
     <>
       <header className="topNav">
         <div className="topNavLeft">
-          <button
-            className="navIcon"
+          <Link
+            to="/home"
+            className="navLogo"
             onClick={() => {
               closeDrawer();
               closeFilter();
-              navigate("/home");
             }}
             aria-label="Go to Home"
             title="Home"
-            type="button"
           >
-            🧸
-          </button>
+            <span className="navLogoIcon">🧸</span>
+            <span className="navLogoText">Bear Gaming</span>
+          </Link>
 
           <button
-            className="navIcon"
-            aria-label="Filter"
-            title="Filter"
+            className="navIconWithLabel"
             type="button"
             onClick={() => {
               closeDrawer();
@@ -53,21 +51,11 @@ export default function LoggedInNavBar() {
             }}
             style={{ position: "relative" }}
           >
-            🌪️
+            <span className="navIconSymbol">🌪️</span>
+            <span className="navIconText">Filter</span>
+
             {hasActiveFilters && (
-              <span
-                style={{
-                  position: "absolute",
-                  top: "2px",
-                  right: "2px",
-                  width: "8px",
-                  height: "8px",
-                  borderRadius: "50%",
-                  background: "#4a6fa5",
-                  border: "2px solid #0f0f1a",
-                  display: "block",
-                }}
-              />
+              <span className="filterDot" />
             )}
           </button>
         </div>
@@ -93,36 +81,35 @@ export default function LoggedInNavBar() {
           </span>
 
           <Link
-            className="navIconLink"
+            className="navIconWithLabel"
             to="/saved-games"
-            aria-label="Saved Games"
-            title="Saved Games"
             onClick={closeDrawer}
           >
-            <BookMarkIcon />
+            <span className="navIconSymbol">
+              <BookMarkIcon />
+            </span>
+            <span className="navIconText">Saved</span>
           </Link>
 
           <Link
-            className="navIconLink"
+            className="navIconWithLabel"
             to="/profile"
-            aria-label="Profile"
-            title="Profile"
             onClick={closeDrawer}
           >
-            👤
+            <span className="navIconSymbol">👤</span>
+            <span className="navIconText">Profile</span>
           </Link>
 
           <button
-            className="navIcon"
-            aria-label="Settings"
-            title="Settings"
+            className="navIconWithLabel"
             type="button"
             onClick={() => {
               closeFilter();
               setDrawerOpen((v) => !v);
             }}
           >
-            ⚙️
+            <span className="navIconSymbol">⚙️</span>
+            <span className="navIconText">Settings</span>
           </button>
         </div>
       </header>

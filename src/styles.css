@@ -248,6 +248,70 @@ body {
 /* =========================
    Logged-in Top Nav
    ========================= */
+
+.navIconWithLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: white;
+  padding: 4px 6px;
+}
+
+.navIconSymbol {
+  height: 22px;              
+  width: 22px;             
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.navIconSymbol {
+  font-size: 18px;
+}
+
+.navIconSymbol svg {
+  display: block;
+  height: 18px;
+  width: 18px;
+}
+
+.navIconText {
+  font-size: 10px;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.navIconWithLabel:hover .navIconText {
+  opacity: 1;
+}
+
+.navLogo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.navLogoIcon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.navLogoText {
+  font-size: 18px;
+  font-weight: 700;
+  color: #f5a623; 
+  letter-spacing: 0.5px;
+}
+
 .topNav {
   position: sticky;
   top: 0;
@@ -272,6 +336,7 @@ body {
 
 .topNavLeft {
   min-width: 110px;
+  gap: 30px;
 }
 
 .topNavRight {
