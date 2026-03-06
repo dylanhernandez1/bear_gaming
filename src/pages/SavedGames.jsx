@@ -1,20 +1,34 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import LoggedInNavBar from "../components/Navbar.jsx";
 import SaveBookmarkButton from "../components/Savebookmarkbutton.jsx";
 import { useSavedGames } from "../context/Savedgamescontext.jsx";
+import { useToast } from "../context/ToastContext";
 import { games } from "../data/games/game.jsx";
 import "../styles.css";
 
 export default function SavedGames() {
-  const { savedIds, username } = useSavedGames();
+  const { savedIds, username, toggleSave } = useSavedGames();
+  const { showToast } = useToast();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
+  const [pendingRemovals, setPendingRemovals] = useState(() => new Set());
+  const pendingTimeouts = useRef({});
+
+  useEffect(() => {
+    return () => {
+      Object.values(pendingTimeouts.current).forEach((timeoutId) => clearTimeout(timeoutId));
+    };
+  }, []);
 
   // Join saved IDs against real game data so we always show up-to-date info
   const savedGames = useMemo(
-    () => savedIds.map((id) => games.find((g) => g.id === id)).filter(Boolean),
-    [savedIds]
+    () =>
+      savedIds
+        .map((id) => games.find((g) => g.id === id))
+        .filter(Boolean)
+        .filter((g) => !pendingRemovals.has(g.id)),
+    [savedIds, pendingRemovals]
   );
 
   const filtered = useMemo(() => {
@@ -24,6 +38,67 @@ export default function SavedGames() {
   }, [savedGames, query]);
 
   const isGuest = username === "guest";
+
+  const cancelPendingRemoval = (gameId) => {
+    const timeoutId = pendingTimeouts.current[gameId];
+    if (timeoutId) clearTimeout(timeoutId);
+    delete pendingTimeouts.current[gameId];
+    setPendingRemovals((prev) => {
+      const next = new Set(prev);
+      next.delete(gameId);
+      return next;
+    });
+  };
+
+  const finalizeRemoval = (gameId) => {
+    toggleSave(gameId);
+    delete pendingTimeouts.current[gameId];
+    setPendingRemovals((prev) => {
+      const next = new Set(prev);
+      next.delete(gameId);
+      return next;
+    });
+  };
+
+  const handlePendingRemove = ({ gameId }) => {
+    if (pendingRemovals.has(gameId)) return;
+
+    setPendingRemovals((prev) => new Set(prev).add(gameId));
+
+    const timeoutId = setTimeout(() => finalizeRemoval(gameId), 3500);
+    pendingTimeouts.current[gameId] = timeoutId;
+
+    showToast({
+      message: (
+        <span style={{ display: "inline-flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+          <span>Game removed from saved games</span>
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              cancelPendingRemoval(gameId);
+            }}
+            style={{
+              background: "transparent",
+              border: "1px solid #3a3a5e",
+              color: "#cfd6f6",
+              fontSize: "12px",
+              padding: "4px 10px",
+              borderRadius: "999px",
+              cursor: "pointer",
+              lineHeight: 1.2,
+            }}
+            onMouseEnter={(event) => (event.currentTarget.style.borderColor = "#5a6fb0")}
+            onMouseLeave={(event) => (event.currentTarget.style.borderColor = "#3a3a5e")}
+          >
+            Undo
+          </button>
+        </span>
+      ),
+      type: "remove",
+      navigateTo: null,
+    });
+  };
 
   return (
     <>
@@ -124,6 +199,7 @@ export default function SavedGames() {
                 <SaveBookmarkButton
                   gameId={game.id}
                   style={{ position: "absolute", top: "8px", right: "8px" }}
+                  onPendingRemove={handlePendingRemove}
                 />
               </article>
             ))}

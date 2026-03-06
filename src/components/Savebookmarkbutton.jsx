@@ -2,7 +2,7 @@ import { useSavedGames } from "../context/Savedgamescontext.jsx";
 import { useToast } from "../context/ToastContext";
 import { games } from "../data/games/game.jsx";
 
-export default function SaveBookmarkButton({ gameId, size = 22, style = {} }) {
+export default function SaveBookmarkButton({ gameId, size = 22, style = {}, onPendingRemove }) {
   const { isSaved, toggleSave } = useSavedGames();
   const { showToast } = useToast();
   const saved = isSaved(gameId);
@@ -10,20 +10,25 @@ export default function SaveBookmarkButton({ gameId, size = 22, style = {} }) {
   const handleClick = (e) => {
     e.stopPropagation();
     const wasSaved = isSaved(gameId);
-    toggleSave(gameId);
 
     const game = games.find((g) => g.id === gameId);
     const title = game?.title || gameId;
 
     if (!wasSaved) {
+      toggleSave(gameId);
       showToast({
         message: `${title} has been added to your saved games!`,
         type: "save",
         navigateTo: "/saved-games",
       });
     } else {
+      if (onPendingRemove) {
+        onPendingRemove({ gameId, title });
+        return;
+      }
+      toggleSave(gameId);
       showToast({
-        message: `${title} has been removed from your saved games.`,
+        message: "Game removed from saved games",
         type: "remove",
         navigateTo: null,
       });

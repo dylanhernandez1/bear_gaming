@@ -228,8 +228,13 @@ const GamePage = () => {
 
           <div style={{ flex: 1, paddingLeft: "36px", paddingBottom: "32px" }}>
             <h3 style={sectionHeader}>Tags</h3>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "24px" }}>
-              {game.tags.map((tag, i) => <span key={i} style={tagStyle}>{tag}</span>)}
+            <div style={tagListStyle} role="list" aria-label="Game tags">
+              {game.tags.map((tag, i) => (
+                <span key={i} style={tagItemStyle} role="listitem">
+                  <span style={tagBulletStyle} aria-hidden="true">•</span>
+                  {tag}
+                </span>
+              ))}
             </div>
 
             <h3 style={sectionHeader}>Description</h3>
@@ -339,9 +344,16 @@ const sectionHeader = {
   fontSize: "17px", fontWeight: "700", margin: "0 0 10px",
   color: "white", letterSpacing: "0.3px",
 };
-const tagStyle = {
-  padding: "5px 14px", background: "#2a2a3e", border: "1px solid #444",
-  borderRadius: "20px", fontSize: "13px", color: "#ddd",
+const tagListStyle = {
+  display: "flex", flexWrap: "wrap", gap: "8px 14px", marginBottom: "24px",
+};
+const tagItemStyle = {
+  display: "inline-flex", alignItems: "center", gap: "6px",
+  fontSize: "13px", color: "#9aa0b3", letterSpacing: "0.2px",
+  cursor: "default", userSelect: "text",
+};
+const tagBulletStyle = {
+  color: "#5c637a", fontSize: "14px", lineHeight: 1,
 };
 
 export default GamePage;
