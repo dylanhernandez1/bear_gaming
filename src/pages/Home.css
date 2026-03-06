@@ -86,12 +86,23 @@
 	flex-wrap: wrap;
 }
 
+.remove-tags {
+	padding-left: 10px;
+	cursor: pointer;
+	font-size: 15px;
+	opacity: 0.6;
+}
+
+.remove-tags:hover {
+  opacity: 1;
+}
+
 .tags {
 	background: #52667a;
 	color: white;
 	padding: 6px 12px;
 	border-radius: 20px;
-	font-size: 14px;
+	font-size: 16px;
 }
 .search-container {
   display: flex;
