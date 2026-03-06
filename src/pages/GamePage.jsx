@@ -184,7 +184,9 @@ const GamePage = () => {
   if (!game) return <h2>Game not found</h2>;
 
   const allReviews = [...extraReviews, ...(game.reviews || [])];
-
+	const calculateRating = 
+		allReviews.length > 0 ? 
+			( allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length).toFixed(1) : game.rating;
   const handleReviewSubmit = (review) => {
     const updated = [review, ...extraReviews];
     setExtraReviews(updated);
@@ -237,8 +239,8 @@ const GamePage = () => {
 
             <h3 style={sectionHeader}>Rating</h3>
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
-              <StarRating rating={game.rating} />
-              <span style={{ fontWeight: "700", fontSize: "18px" }}>{game.rating}/5</span>
+              <StarRating rating={calculateRating} />
+              <span style={{ fontWeight: "700", fontSize: "18px" }}>{calculateRating}/5</span>
             </div>
             <p style={{ color: "#aaa", fontSize: "14px", marginBottom: "24px" }}>
               Users play this game for an average of{" "}
