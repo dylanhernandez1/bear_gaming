@@ -17,7 +17,7 @@ export default function SaveBookmarkButton({ gameId, size = 22, style = {}, onPe
     if (!wasSaved) {
       toggleSave(gameId);
       showToast({
-        message: `${title} has been added to your saved games!`,
+        message: <span><strong style={{ color: "white" }}>{title}</strong> has been added to your saved games!</span>,
         type: "save",
         navigateTo: "/saved-games",
       });
@@ -28,7 +28,7 @@ export default function SaveBookmarkButton({ gameId, size = 22, style = {}, onPe
       }
       toggleSave(gameId);
       showToast({
-        message: "Game removed from saved games",
+        message: <span><strong style={{ color: "white" }}>{title}</strong> removed from saved games</span>,
         type: "remove",
         navigateTo: null,
       });

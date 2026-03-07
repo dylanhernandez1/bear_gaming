@@ -9,19 +9,19 @@ import "../styles.css";
 
 export default function SavedGames() {
   const { savedIds, username, toggleSave } = useSavedGames();
-  const { showToast } = useToast();
+  const { showToast, dismiss } = useToast();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [pendingRemovals, setPendingRemovals] = useState(() => new Set());
   const pendingTimeouts = useRef({});
+  const pendingToastIds = useRef({});
 
   useEffect(() => {
     return () => {
-      Object.values(pendingTimeouts.current).forEach((timeoutId) => clearTimeout(timeoutId));
+      Object.values(pendingTimeouts.current).forEach((id) => clearTimeout(id));
     };
   }, []);
 
-  // Join saved IDs against real game data so we always show up-to-date info
   const savedGames = useMemo(
     () =>
       savedIds
@@ -40,9 +40,12 @@ export default function SavedGames() {
   const isGuest = username === "guest";
 
   const cancelPendingRemoval = (gameId) => {
-    const timeoutId = pendingTimeouts.current[gameId];
-    if (timeoutId) clearTimeout(timeoutId);
+    clearTimeout(pendingTimeouts.current[gameId]);
     delete pendingTimeouts.current[gameId];
+
+    dismiss(pendingToastIds.current[gameId]);
+    delete pendingToastIds.current[gameId];
+
     setPendingRemovals((prev) => {
       const next = new Set(prev);
       next.delete(gameId);
@@ -53,6 +56,7 @@ export default function SavedGames() {
   const finalizeRemoval = (gameId) => {
     toggleSave(gameId);
     delete pendingTimeouts.current[gameId];
+    delete pendingToastIds.current[gameId];
     setPendingRemovals((prev) => {
       const next = new Set(prev);
       next.delete(gameId);
@@ -60,18 +64,20 @@ export default function SavedGames() {
     });
   };
 
-  const handlePendingRemove = ({ gameId }) => {
+  const handlePendingRemove = ({ gameId, title }) => {
     if (pendingRemovals.has(gameId)) return;
+
+    const gameTitle = title || games.find((g) => g.id === gameId)?.title || gameId;
 
     setPendingRemovals((prev) => new Set(prev).add(gameId));
 
     const timeoutId = setTimeout(() => finalizeRemoval(gameId), 3500);
     pendingTimeouts.current[gameId] = timeoutId;
 
-    showToast({
+    const toastId = showToast({
       message: (
         <span style={{ display: "inline-flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-          <span>Game removed from saved games</span>
+          <span><strong style={{ color: "white" }}>{gameTitle}</strong> removed from saved games</span>
           <button
             type="button"
             onClick={(event) => {
@@ -98,6 +104,8 @@ export default function SavedGames() {
       type: "remove",
       navigateTo: null,
     });
+
+    pendingToastIds.current[gameId] = toastId;
   };
 
   return (
@@ -155,7 +163,6 @@ export default function SavedGames() {
                 style={{ position: "relative", cursor: "pointer" }}
                 onClick={() => navigate(`/game/${game.id}`)}
               >
-                {/* Game cover image */}
                 <div
                   className="gameCover"
                   style={{ padding: 0, overflow: "hidden", background: "#1a1a2e" }}
@@ -169,7 +176,6 @@ export default function SavedGames() {
 
                 <div className="gameTitle">{game.title}</div>
 
-                {/* Rating + hours pill */}
                 <div style={{ display: "flex", gap: "8px", padding: "0 12px 4px", flexWrap: "wrap" }}>
                   <span style={{
                     fontSize: "12px", color: "#f5c518", background: "#1e1e30",
@@ -195,7 +201,6 @@ export default function SavedGames() {
                   </button>
                 </div>
 
-                {/* Bookmark toggle — top-right corner, unsaves on click */}
                 <SaveBookmarkButton
                   gameId={game.id}
                   style={{ position: "absolute", top: "8px", right: "8px" }}

@@ -1,26 +1,32 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 const ToastContext = createContext(null);
 
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
+  const timers = useRef({});
+
+  const dismiss = useCallback((id) => {
+    clearTimeout(timers.current[id]);
+    delete timers.current[id];
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
 
   const showToast = useCallback(({ message, type = "save", navigateTo }) => {
     const id = Date.now() + Math.random();
     setToasts((prev) => [...prev, { id, message, type, navigateTo }]);
 
-    setTimeout(() => {
+    timers.current[id] = setTimeout(() => {
+      delete timers.current[id];
       setToasts((prev) => prev.filter((t) => t.id !== id));
     }, 3500);
-  }, []);
 
-  const dismiss = useCallback((id) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
+    return id;
   }, []);
 
   return (
-    <ToastContext.Provider value={{ showToast }}>
+    <ToastContext.Provider value={{ showToast, dismiss }}>
       {children}
       <ToastContainer toasts={toasts} onDismiss={dismiss} />
     </ToastContext.Provider>
@@ -59,14 +65,15 @@ function Toast({ toast, onDismiss }) {
   const navigate = useNavigate();
   const isSave = toast.type === "save";
 
-  const handleClick = () => {
+  const handleBodyClick = () => {
+    if (!isSave) return; // remove toasts: body click does nothing
     onDismiss(toast.id);
     if (toast.navigateTo) navigate(toast.navigateTo);
   };
 
   return (
     <div
-      onClick={handleClick}
+      onClick={handleBodyClick}
       style={{
         display: "flex",
         alignItems: "center",
@@ -77,7 +84,7 @@ function Toast({ toast, onDismiss }) {
         borderTop: `3px solid ${isSave ? "#4a6fa5" : "#6b3a3a"}`,
         borderRadius: "10px",
         boxShadow: "0 8px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(74,111,165,0.1)",
-        cursor: "pointer",
+        cursor: isSave ? "pointer" : "default",
         maxWidth: "360px",
         minWidth: "280px",
         position: "relative",
