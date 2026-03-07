@@ -16,9 +16,17 @@ export default function SavedGames() {
   const pendingTimeouts = useRef({});
   const pendingToastIds = useRef({});
 
+  // Keep a ref to toggleSave so the unmount cleanup can call the latest version
+  const toggleSaveRef = useRef(toggleSave);
+  useEffect(() => { toggleSaveRef.current = toggleSave; }, [toggleSave]);
+
+  // On unmount: cancel all timers and immediately commit any pending removals
   useEffect(() => {
     return () => {
-      Object.values(pendingTimeouts.current).forEach((id) => clearTimeout(id));
+      Object.keys(pendingTimeouts.current).forEach((gameId) => {
+        clearTimeout(pendingTimeouts.current[gameId]);
+        toggleSaveRef.current(gameId);
+      });
     };
   }, []);
 
